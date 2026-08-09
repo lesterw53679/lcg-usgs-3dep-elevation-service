@@ -1,0 +1,21 @@
+{
+  "units": "meters",
+  "points": [
+    {
+      "db_key": "FL-TALLAHASSEE",
+      "latitude": 30.4383,
+      "longitude": -84.2807
+    },
+    {
+      "db_key": "FL-TAMPA",
+      "latitude": 27.9506,
+      "longitude": -82.4572
+    },
+    {
+      "db_key": "FL-GULF-01",
+      "latitude": 27.0,
+      "longitude": -85.0
+    }
+  ]
+}
+

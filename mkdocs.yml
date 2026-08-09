@@ -1,0 +1,11 @@
+site_name: USGS 3DEP Elevation Service
+site_description: User and developer documentation for the elevation API.
+theme:
+  name: material
+nav:
+  - Home: index.md
+  - API: api.md
+  - Architecture: architecture.md
+  - Verification: verification.md
+  - ArcGIS Pro roadmap: arcgis-pro.md
+  - Azure deployment: azure-deployment.md

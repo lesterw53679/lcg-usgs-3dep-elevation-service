@@ -1,0 +1,9 @@
+DB_Key	Latitude	Longitude	Expected_Problem
+BAD-LATITUDE	91.0	-84.0	Latitude exceeds 90
+BAD-LONGITUDE	30.0	-181.0	Longitude is below -180
+BAD-NUMERIC	twenty-seven	-82.0	Latitude is not numeric
+MISSING-LONGITUDE	27.0		Longitude is missing
+=FORMULA	27.0	-82.0	DB_Key begins with a spreadsheet formula character
+DUPLICATE-KEY	28.0	-81.0	Duplicate key appears below
+DUPLICATE-KEY	29.0	-82.0	Duplicate key appears above
+
