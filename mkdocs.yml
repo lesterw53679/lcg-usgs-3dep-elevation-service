@@ -8,4 +8,5 @@ nav:
   - Architecture: architecture.md
   - Verification: verification.md
   - ArcGIS Pro roadmap: arcgis-pro.md
-  - Azure deployment: azure-deployment.md
+  - Azure installation: azure-deployment.md
+  - GitHub Actions and OIDC: github-actions-oidc.md

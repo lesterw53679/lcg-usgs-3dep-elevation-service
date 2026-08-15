@@ -79,3 +79,11 @@ mkdocs serve
 Project documentation covers the API contract, architecture, Azure preparation, and the
 planned ArcGIS Pro line-to-points integration.
 
+The deployment chapters provide the complete reproducible Azure installation and the ongoing
+GitHub Actions/OIDC delivery pattern:
+
+- `docs/azure-deployment.md`: one-time Azure resources, bootstrap image, managed-identity ACR
+  pull, application settings, verification, and the exact original workarounds.
+- `docs/github-actions-oidc.md`: passwordless GitHub-to-Azure authentication, least-privilege
+  roles, repository configuration, automatic deployments, verification, rollback, and
+  troubleshooting.

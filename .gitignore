@@ -8,8 +8,8 @@ __pycache__/
 htmlcov/
 build/
 dist/
+site/
 cache/
 .env
 .DS_Store
 .vscode/settings.json
-
