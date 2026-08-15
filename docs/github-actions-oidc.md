@@ -31,11 +31,13 @@ Authentication answers **who is this?** Authorization answers **what may it do?*
 The trust subject used by this project is:
 
 ```text
-repo:lesterw53679/lcg-usgs-3dep-elevation-service:ref:refs/heads/main
+repo:lesterw53679@115024906/lcg-usgs-3dep-elevation-service@1328287130:ref:refs/heads/main
 ```
 
-That subject deliberately prevents a workflow from an untrusted branch, fork, or different
-repository from using the deployment identity.
+GitHub repositories created after July 15, 2026 use this immutable subject format. The numeric
+owner and repository IDs remain stable if either display name changes. The complete subject
+deliberately prevents a workflow from an untrusted branch, fork, renamed replacement, or
+different repository from using the deployment identity.
 
 ## What is CI and what is CD?
 
@@ -84,10 +86,14 @@ LCG_APP="lcg-elevation-dev-53679"
 LCG_IMAGE="lcg-usgs-3dep-elevation-service"
 
 LCG_GITHUB_OWNER="lesterw53679"
+LCG_GITHUB_OWNER_ID="115024906"
 LCG_GITHUB_REPO="lcg-usgs-3dep-elevation-service"
+LCG_GITHUB_REPO_ID="1328287130"
 LCG_GITHUB_BRANCH="main"
 LCG_GITHUB_IDENTITY="id-github-lcg-elevation-dev"
 LCG_GITHUB_FEDERATED_CREDENTIAL="github-main-lcg-elevation-dev"
+
+LCG_GITHUB_IMMUTABLE_SUBJECT="repo:${LCG_GITHUB_OWNER}@${LCG_GITHUB_OWNER_ID}/${LCG_GITHUB_REPO}@${LCG_GITHUB_REPO_ID}:ref:refs/heads/${LCG_GITHUB_BRANCH}"
 
 LCG_SUBSCRIPTION_ID=$(az account show --query id --output tsv)
 LCG_TENANT_ID=$(az account show --query tenantId --output tsv)
@@ -102,14 +108,15 @@ az account show \
 
 printf 'GitHub repository: %s/%s\n' "$LCG_GITHUB_OWNER" "$LCG_GITHUB_REPO"
 printf 'Trusted branch: %s\n' "$LCG_GITHUB_BRANCH"
-printf 'OIDC subject: repo:%s/%s:ref:refs/heads/%s\n' \
-  "$LCG_GITHUB_OWNER" \
-  "$LCG_GITHUB_REPO" \
-  "$LCG_GITHUB_BRANCH"
+printf 'OIDC subject: %s\n' "$LCG_GITHUB_IMMUTABLE_SUBJECT"
 ```
 
-OIDC claim matching is exact. Check the owner, repository, and branch spelling before creating
-the credential.
+OIDC claim matching is exact. Check the names, numeric IDs, and branch before creating the
+credential. For this repository, the expected subject is:
+
+```text
+repo:lesterw53679@115024906/lcg-usgs-3dep-elevation-service@1328287130:ref:refs/heads/main
+```
 
 ## 2. Create the GitHub deployment identity
 
@@ -162,7 +169,7 @@ az identity federated-credential create \
   --identity-name "$LCG_GITHUB_IDENTITY" \
   --name "$LCG_GITHUB_FEDERATED_CREDENTIAL" \
   --issuer "https://token.actions.githubusercontent.com" \
-  --subject "repo:${LCG_GITHUB_OWNER}/${LCG_GITHUB_REPO}:ref:refs/heads/${LCG_GITHUB_BRANCH}" \
+  --subject "$LCG_GITHUB_IMMUTABLE_SUBJECT" \
   --audiences "api://AzureADTokenExchange"
 ```
 
@@ -177,7 +184,8 @@ az identity federated-credential show \
   --output json
 ```
 
-The subject must end in `ref:refs/heads/main`.
+The subject must contain `lesterw53679@115024906`,
+`lcg-usgs-3dep-elevation-service@1328287130`, and end in `ref:refs/heads/main`.
 
 ## 4. Resolve the two least-privilege scopes
 
@@ -480,9 +488,16 @@ Azure received a GitHub token, but the issuer, subject, or audience did not matc
 
 - The workflow ran from `main`.
 - The owner is `lesterw53679`.
+- The immutable owner ID is `115024906`.
 - The repository is `lcg-usgs-3dep-elevation-service`.
+- The immutable repository ID is `1328287130`.
 - The federated subject ends with `ref:refs/heads/main`.
 - The workflow has `id-token: write`.
+
+The GitHub Actions login step prints the subject claim that Azure received. Compare that entire
+value with the Azure credential; the comparison is exact. A name-only subject such as
+`repo:lesterw53679/lcg-usgs-3dep-elevation-service:ref:refs/heads/main` does not match this
+repository's immutable subject.
 
 ### Azure login says a secret is missing
 
@@ -549,6 +564,8 @@ This gives each environment its own:
 - [Azure App Service custom-container deployment with GitHub Actions](https://learn.microsoft.com/azure/app-service/deploy-container-github-action)
 - [Use Azure Login with OpenID Connect](https://learn.microsoft.com/azure/developer/github/connect-from-azure-openid-connect)
 - [GitHub OIDC concepts](https://docs.github.com/actions/concepts/security/openid-connect)
+- [GitHub OIDC subject reference](https://docs.github.com/actions/reference/openid-connect-reference)
+- [Migrate GitHub credentials to immutable subjects](https://learn.microsoft.com/entra/workload-id/workload-identities-github-immutable-subjects)
 - [Azure Login action](https://github.com/Azure/login)
 - [Azure Web Apps Deploy action](https://github.com/Azure/webapps-deploy)
 - [User-assigned identity federated-credential CLI](https://learn.microsoft.com/cli/azure/identity/federated-credential)
