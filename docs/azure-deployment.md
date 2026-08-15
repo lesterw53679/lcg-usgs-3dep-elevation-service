@@ -25,6 +25,7 @@ compared with the resources in the Azure portal.
 | Initial image tag | `bootstrap` |
 | App Service plan | `asp-lcg-elevation-dev` |
 | App Service web app | `lcg-elevation-dev-53679` |
+| Public custom hostname | `elevation.logiccloudgeo.com` |
 | Container port | `8000` |
 | Health endpoint | `/health` |
 | GitHub repository | `lesterw53679/lcg-usgs-3dep-elevation-service` |
@@ -538,10 +539,12 @@ Press `Ctrl+C` to stop following logs; that does not stop the Web App.
 
 ## Installation result
 
-At this point Azure can run a manually selected image from ACR. The next chapter adds a second,
-separate identity for GitHub Actions. That identity will be allowed to push a new image and
-select it on the Web App. The Web App's existing system identity will remain responsible for
-pulling and starting the selected image.
+At this point Azure can run a manually selected image from ACR. The
+[GitHub Actions and Azure OIDC](github-actions-oidc.md) chapter adds a second, separate identity
+that can push a new image and select it on the Web App. The Web App's existing system identity
+remains responsible for pulling and starting the selected image. After automatic deployment is
+working, the [custom domain and TLS](custom-domain-tls.md) chapter publishes the service at
+`https://elevation.logiccloudgeo.com`.
 
 ## Official references
 

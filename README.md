@@ -87,3 +87,9 @@ GitHub Actions/OIDC delivery pattern:
 - `docs/github-actions-oidc.md`: passwordless GitHub-to-Azure authentication, least-privilege
   roles, repository configuration, automatic deployments, verification, rollback, and
   troubleshooting.
+- `docs/custom-domain-tls.md`: GoDaddy CNAME and ownership records, Azure hostname mapping,
+  App Service managed certificate creation, SNI binding, HTTPS enforcement, verification,
+  renewal, and the empty-thumbprint recovery used during installation.
+
+The deployed development service is available at
+<https://elevation.logiccloudgeo.com/docs>.

@@ -1,9 +1,11 @@
 # GitHub Actions deployment with Azure OIDC
 
 This chapter converts the working manual Azure deployment into continuous deployment. A push
-to the repository's `main` branch will test the Python project, build a Docker image, push that
-image to Azure Container Registry, point Azure App Service at the new immutable image tag, and
-confirm that the deployed `/health` endpoint responds successfully.
+containing application or deployment changes on the repository's `main` branch will test the
+Python project, build a Docker image, push that image to Azure Container Registry, point Azure
+App Service at the new immutable image tag, and confirm that the deployed `/health` endpoint
+responds successfully. Documentation-only pushes continue to run CI but skip the container
+deployment.
 
 The workflow uses OpenID Connect (OIDC). No Azure client password, ACR password, or App Service
 publish profile is stored in GitHub.
@@ -46,7 +48,7 @@ The repository contains two workflows:
 | File | Role | Trigger |
 | --- | --- | --- |
 | `.github/workflows/ci.yml` | Continuous integration: lint and test code | Pull requests and pushes to `main` |
-| `.github/workflows/azure-deploy.yml` | Continuous deployment: test, build, push, deploy, and verify | Pushes to `main` and manual dispatch |
+| `.github/workflows/azure-deploy.yml` | Continuous deployment: test, build, push, deploy, and verify | Non-documentation pushes to `main` and manual dispatch |
 
 The deployment workflow repeats linting and tests intentionally. A deployment should be able
 to prove the revision it is about to release even if another workflow was skipped, cancelled,
@@ -343,6 +345,10 @@ are:
 on:
   push:
     branches: [main]
+    paths-ignore:
+      - "docs/**"
+      - "README.md"
+      - "mkdocs.yml"
   workflow_dispatch:
 
 permissions:
@@ -353,6 +359,11 @@ permissions:
 `contents: read` lets the job check out the repository. `id-token: write` does not grant write
 access to source code; it allows the job to ask GitHub's OIDC provider for the signed identity
 token that Azure validates.
+
+The `paths-ignore` list prevents a documentation-only commit from rebuilding and redeploying an
+unchanged container. `ci.yml` still installs the documentation dependencies and runs
+`mkdocs build --strict`, so documentation changes remain validated. Manual dispatch remains
+available even when the most recent commit contains only documentation.
 
 The workflow image repository must remain exactly:
 
@@ -445,6 +456,11 @@ curl --fail --show-error --silent \
 
 ## 14. Routine development after OIDC is working
 
+The deployed Web App can retain multiple hostnames. The GitHub workflow updates the Web App's
+container image and does not need to recreate DNS or TLS settings. See
+[GoDaddy custom domain and Azure-managed TLS](custom-domain-tls.md) for the one-time public
+hostname configuration.
+
 The normal change path is:
 
 1. Create a short-lived feature branch locally.
@@ -452,10 +468,12 @@ The normal change path is:
 3. Push the branch and open a pull request.
 4. Let `ci.yml` lint and test the pull request.
 5. Review and merge the pull request into `main`.
-6. The merge commit automatically triggers `azure-deploy.yml`.
-7. Confirm the deployment job and its health check succeed.
+6. A merge containing application or deployment changes triggers `azure-deploy.yml`.
+7. Confirm the deployment job and its health check succeed. For documentation-only merges,
+   confirm CI succeeds; no deployment run is expected.
 
-Direct pushes to `main` also deploy, but pull requests provide a clearer review and audit trail.
+Direct non-documentation pushes to `main` also deploy, but pull requests provide a clearer
+review and audit trail.
 
 ## 15. Roll back to an earlier image
 

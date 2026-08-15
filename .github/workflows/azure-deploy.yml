@@ -3,6 +3,10 @@ name: Deploy custom container to Azure App Service
 on:
   push:
     branches: [main]
+    paths-ignore:
+      - "docs/**"
+      - "README.md"
+      - "mkdocs.yml"
   workflow_dispatch:
 
 permissions:

@@ -19,4 +19,11 @@ latitude in decimal degrees. It supports a single point or an ordered batch of k
 - Strict coordinate and identifier validation
 - Configurable batch size, upstream timeout, retry, and concurrency controls
 - Automated tests that do not contact USGS by default
+- Passwordless GitHub Actions deployments using Azure OIDC
+- Public custom hostname with Azure-managed TLS
 
+## Deployed development service
+
+- API base URL: <https://elevation.logiccloudgeo.com>
+- Interactive OpenAPI documentation: <https://elevation.logiccloudgeo.com/docs>
+- Health check: <https://elevation.logiccloudgeo.com/health>
