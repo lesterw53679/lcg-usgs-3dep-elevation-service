@@ -21,6 +21,7 @@ latitude in decimal degrees. It supports a single point or an ordered batch of k
 - Automated tests that do not contact USGS by default
 - Passwordless GitHub Actions deployments using Azure OIDC
 - Public custom hostname with Azure-managed TLS
+- Jupyter workflow for ordered topographic profiles
 
 ## Deployed development service
 

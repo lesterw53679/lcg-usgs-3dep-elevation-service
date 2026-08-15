@@ -20,3 +20,8 @@ Line-profile calculations should retain both sequence and distance-along-line va
 attributes can be returned alongside elevation and plotted without reconstructing order from
 coordinates.
 
+The [topographic-profile notebook](topographic-profile-notebook.md) implements this client
+pattern independently of ArcPy. It is the reference workflow for local validation, sequential
+batching, WGS 84 geodesic distance, result-order checks, no-data handling, and profile exports.
+The first ArcGIS tool integration should reproduce those behaviors while reading and writing
+feature classes directly.

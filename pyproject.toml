@@ -30,6 +30,7 @@ notebooks = [
   "jupyterlab>=4.3,<5",
   "matplotlib>=3.9,<4",
   "pandas>=2.2,<4",
+  "pyproj>=3.7,<4",
   "requests>=2.32,<3",
 ]
 
@@ -49,4 +50,3 @@ target-version = "py311"
 
 [tool.ruff.lint]
 select = ["E", "F", "I", "UP", "B", "SIM"]
-

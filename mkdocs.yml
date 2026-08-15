@@ -11,3 +11,4 @@ nav:
   - Azure installation: azure-deployment.md
   - GitHub Actions and OIDC: github-actions-oidc.md
   - Custom domain and TLS: custom-domain-tls.md
+  - Topographic profile notebook: topographic-profile-notebook.md

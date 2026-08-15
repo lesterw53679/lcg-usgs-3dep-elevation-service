@@ -90,6 +90,23 @@ GitHub Actions/OIDC delivery pattern:
 - `docs/custom-domain-tls.md`: GoDaddy CNAME and ownership records, Azure hostname mapping,
   App Service managed certificate creation, SNI binding, HTTPS enforcement, verification,
   renewal, and the empty-thumbprint recovery used during installation.
+- `docs/topographic-profile-notebook.md`: ordered point input, local validation, sequential API
+  batching, WGS 84 geodesic distance, no-data review, plotting, exports, and the path toward
+  ArcGIS Pro and browser clients.
 
 The deployed development service is available at
 <https://elevation.logiccloudgeo.com/docs>.
+
+## Topographic profile notebook
+
+Install the notebook dependencies and start JupyterLab from the repository root:
+
+```powershell
+python -m pip install -e ".[notebooks]"
+python -m jupyter lab
+```
+
+Open `notebooks/topographic_profile.ipynb`. The notebook reads an ordered WGS 84 point table,
+queries the public bulk-elevation endpoint, calculates WGS 84 geodesic distance along the
+profile, plots the elevations, and exports CSV, GeoJSON, and PNG results. A small synthetic
+Florida transect is provided in `sample_data/florida_profile_points.csv`.
