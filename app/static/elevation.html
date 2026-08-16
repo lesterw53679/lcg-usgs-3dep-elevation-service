@@ -1,0 +1,172 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta
+      name="description"
+      content="Logic Cloud Geo USGS 3DEP elevation service documentation, notebooks, and web demonstration."
+    />
+    <title>Elevation Service | Logic Cloud Geo</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Fraunces:opsz,wght@9..144,600&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="/static/css/site.css" />
+  </head>
+  <body>
+    <a class="skip-link" href="#main-content">Skip to content</a>
+    <header class="site-header">
+      <a class="brand" href="/" aria-label="Logic Cloud Geo home">
+        <span class="brand-mark" aria-hidden="true">LCG</span>
+        <span class="brand-name">Logic Cloud <strong>Geo</strong></span>
+      </a>
+      <button class="menu-toggle" type="button" aria-expanded="false" data-menu-toggle>
+        Menu
+      </button>
+      <nav class="site-nav" aria-label="Primary navigation" data-site-nav>
+        <a href="/">Home</a>
+        <a aria-current="page" href="/elevation">Elevation service</a>
+        <a href="/elevation/demo">Map demonstration</a>
+        <a href="/docs">API documentation</a>
+      </nav>
+    </header>
+
+    <main id="main-content">
+      <section class="page-hero contour-field">
+        <div>
+          <p class="eyebrow">Logic Cloud Geo service 01</p>
+          <h1>USGS 3DEP elevation, through a small and explicit API.</h1>
+          <p class="hero-lead">
+            Submit WGS 84 coordinates and receive bare-earth elevations with units, horizontal
+            reference, dataset, resolution, provider, and vertical-reference metadata.
+          </p>
+          <div class="button-row">
+            <a class="button button-primary" href="/elevation/demo">Try the map</a>
+            <a class="button button-secondary" href="/docs">Open API documentation</a>
+          </div>
+        </div>
+        <aside class="status-card" aria-label="Current service status">
+          <span class="status-dot" aria-hidden="true"></span>
+          <p class="status-label">Public development service</p>
+          <p class="status-value">Healthy and deployed</p>
+          <a href="/health">View live health response</a>
+        </aside>
+      </section>
+
+      <section class="section facts-strip" aria-label="Service facts">
+        <div><span>Dataset</span><strong>USGS 3DEP bare earth</strong></div>
+        <div><span>Nominal resolution</span><strong>1/3 arc-second · ~10 m</strong></div>
+        <div><span>Input CRS</span><strong>EPSG:4326</strong></div>
+        <div><span>Output units</span><strong>Meters or feet</strong></div>
+      </section>
+
+      <section class="section two-column">
+        <div>
+          <p class="eyebrow">Service contract</p>
+          <h2>One point or an ordered batch.</h2>
+          <p>
+            The single-point endpoint is useful for map clicks and simple lookups. The batch
+            endpoint accepts as many as 500 uniquely keyed coordinates and returns them in request
+            order, making it suitable for GIS joins and profile workflows.
+          </p>
+        </div>
+        <div class="endpoint-list">
+          <article class="endpoint-card">
+            <span class="method method-get">GET</span>
+            <code>/api/v1/elevation</code>
+            <p>Latitude, longitude, and requested units.</p>
+          </article>
+          <article class="endpoint-card">
+            <span class="method method-post">POST</span>
+            <code>/api/v1/elevations</code>
+            <p>An ordered list of keyed points, with a 500-point request maximum.</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="section validation-panel">
+        <div>
+          <p class="eyebrow">Controlled Florida comparison</p>
+          <h2>Consistent with an independently extracted USGS raster profile.</h2>
+          <p>
+            A 486-point comparison against a historical USGS 1-arc-second DEM showed strong
+            agreement. This validates workflow consistency; it does not make either DEM a surveyed
+            benchmark.
+          </p>
+        </div>
+        <dl class="metric-grid">
+          <div><dt>Mean bias</dt><dd>+0.22 ft</dd></div>
+          <div><dt>Mean absolute difference</dt><dd>1.34 ft</dd></div>
+          <div><dt>RMSE between datasets</dt><dd>2.16 ft</dd></div>
+          <div><dt>Within 5 feet</dt><dd>96.1%</dd></div>
+        </dl>
+      </section>
+
+      <section class="section" id="notebooks">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">Download and learn</p>
+            <h2>Reviewed Jupyter notebook examples.</h2>
+          </div>
+          <p>
+            Each notebook uses the public HTTPS API and keeps the request, validation, and export
+            steps visible for adaptation.
+          </p>
+        </div>
+        <div class="download-grid">
+          <article class="download-card">
+            <span class="file-badge">IPYNB</span>
+            <h3>Elevation API examples</h3>
+            <p>
+              A compact introduction covering one coordinate, a keyed point list, and a pandas
+              join back to the source table.
+            </p>
+            <a class="button button-primary" href="/downloads/elevation-api-examples.ipynb" download
+              >Download notebook</a
+            >
+          </article>
+          <article class="download-card">
+            <span class="file-badge">IPYNB</span>
+            <h3>Topographic profile</h3>
+            <p>
+              Validates ordered coordinates, batches service requests, measures WGS 84 geodesic
+              distance, charts a profile, and exports CSV and GeoJSON.
+            </p>
+            <a class="button button-primary" href="/downloads/topographic-profile.ipynb" download
+              >Download notebook</a
+            >
+          </article>
+        </div>
+      </section>
+
+      <section class="section notice-panel">
+        <h2>Appropriate use</h2>
+        <p>
+          Returned values are samples from a digital elevation model. They are useful for mapping,
+          screening, visualization, profiles, and reproducible analysis, but they are not surveyed
+          spot elevations and should not replace project-specific engineering or legal surveys.
+        </p>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <div>
+        <a class="brand brand-footer" href="/">
+          <span class="brand-mark" aria-hidden="true">LCG</span>
+          <span class="brand-name">Logic Cloud <strong>Geo</strong></span>
+        </a>
+        <p>Practical geospatial services and demonstrations.</p>
+      </div>
+      <div class="footer-links">
+        <a href="mailto:lesterw@logiccloudgeo.com">lesterw@logiccloudgeo.com</a>
+        <a href="/docs">API documentation</a>
+        <a href="/health">Service health</a>
+      </div>
+      <p class="footer-meta">© <span data-current-year></span> Logic Cloud Geo</p>
+    </footer>
+    <script src="/static/js/site.js" defer></script>
+  </body>
+</html>

@@ -1,0 +1,159 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta
+      name="description"
+      content="Logic Cloud Geo builds practical, transparent geospatial web services and mapping demonstrations."
+    />
+    <title>Logic Cloud Geo | Practical geospatial tools</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Fraunces:opsz,wght@9..144,600&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="/static/css/site.css" />
+  </head>
+  <body>
+    <a class="skip-link" href="#main-content">Skip to content</a>
+    <header class="site-header">
+      <a class="brand" href="/" aria-label="Logic Cloud Geo home">
+        <span class="brand-mark" aria-hidden="true">LCG</span>
+        <span class="brand-name">Logic Cloud <strong>Geo</strong></span>
+      </a>
+      <button class="menu-toggle" type="button" aria-expanded="false" data-menu-toggle>
+        Menu
+      </button>
+      <nav class="site-nav" aria-label="Primary navigation" data-site-nav>
+        <a aria-current="page" href="/">Home</a>
+        <a href="/elevation">Elevation service</a>
+        <a href="/elevation/demo">Map demonstration</a>
+        <a href="/docs">API documentation</a>
+      </nav>
+    </header>
+
+    <main id="main-content">
+      <section class="hero contour-field">
+        <div class="hero-copy">
+          <p class="eyebrow">Geology · GIS · Open web mapping</p>
+          <h1>Geospatial tools built for clear, practical decisions.</h1>
+          <p class="hero-lead">
+            Logic Cloud Geo is a growing collection of focused geospatial services,
+            reproducible workflows, and browser-based demonstrations for people who work with
+            real places and real data.
+          </p>
+          <div class="button-row">
+            <a class="button button-primary" href="/elevation/demo">Explore the elevation map</a>
+            <a class="button button-secondary" href="/elevation">View the service</a>
+          </div>
+          <dl class="hero-facts" aria-label="Platform highlights">
+            <div><dt>Source-aware</dt><dd>USGS 3DEP provenance</dd></div>
+            <div><dt>Open mapping</dt><dd>MapLibre GL JS</dd></div>
+            <div><dt>Reproducible</dt><dd>API and notebooks</dd></div>
+          </dl>
+        </div>
+        <div class="hero-graphic" aria-label="Stylized Florida terrain illustration">
+          <div class="terrain-card">
+            <span class="map-label map-label-north">Tallahassee</span>
+            <span class="map-label map-label-coast">Gulf Coast</span>
+            <span class="elevation-chip">3DEP<br /><strong>10 m</strong></span>
+            <div class="terrain-ridge terrain-ridge-one"></div>
+            <div class="terrain-ridge terrain-ridge-two"></div>
+            <div class="profile-trace"></div>
+          </div>
+          <p class="graphic-caption">A visual placeholder for future Logic Cloud Geo artwork.</p>
+        </div>
+      </section>
+
+      <section class="section section-grid">
+        <div>
+          <p class="eyebrow">What we are building</p>
+          <h2>Small services with visible methods.</h2>
+        </div>
+        <div class="prose-large">
+          <p>
+            The first public demonstration turns a USGS elevation workflow into an approachable
+            web map. Draw one point or one line, submit it to the Logic Cloud Geo elevation API,
+            and review the returned coordinates, elevations, and profile results.
+          </p>
+          <p>
+            The same service also supports Python, Jupyter, ArcGIS Pro, and other clients that can
+            send standard HTTPS requests.
+          </p>
+        </div>
+      </section>
+
+      <section class="section card-grid" aria-label="Logic Cloud Geo capabilities">
+        <article class="feature-card">
+          <span class="feature-number">01</span>
+          <h3>Elevation as a service</h3>
+          <p>Query one point or an ordered, user-keyed list against a USGS 3DEP bare-earth DEM.</p>
+          <a class="text-link" href="/elevation">Service details <span aria-hidden="true">→</span></a>
+        </article>
+        <article class="feature-card">
+          <span class="feature-number">02</span>
+          <h3>Interactive web mapping</h3>
+          <p>Use a free, open MapLibre map to explore terrain and build an elevation request.</p>
+          <a class="text-link" href="/elevation/demo">Open the map <span aria-hidden="true">→</span></a>
+        </article>
+        <article class="feature-card">
+          <span class="feature-number">03</span>
+          <h3>Documented workflows</h3>
+          <p>Download notebooks and follow the same validated steps used to test the public API.</p>
+          <a class="text-link" href="/elevation#notebooks">Download notebooks <span aria-hidden="true">→</span></a>
+        </article>
+      </section>
+
+      <section class="section founder-panel">
+        <div class="founder-monogram" aria-hidden="true">LW</div>
+        <div>
+          <p class="eyebrow">Founder profile</p>
+          <h2>Lester J. Williams</h2>
+          <p>
+            A geologist and geospatial developer focused on turning scientific data and GIS
+            workflows into useful, understandable software. This introductory profile is a
+            placeholder that can grow into a fuller biography, project history, and professional
+            portfolio.
+          </p>
+          <div class="button-row">
+            <a class="button button-primary" href="mailto:lesterw@logiccloudgeo.com">Email Lester</a>
+            <a
+              class="button button-secondary"
+              href="https://www.linkedin.com/in/lester-j-williams-590519145"
+              target="_blank"
+              rel="noreferrer"
+              >LinkedIn profile</a
+            >
+          </div>
+        </div>
+      </section>
+
+      <section class="section callout">
+        <div>
+          <p class="eyebrow">Start with the working service</p>
+          <h2>Draw a Florida profile and see the API respond.</h2>
+        </div>
+        <a class="button button-light" href="/elevation/demo">Launch demonstration</a>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <div>
+        <a class="brand brand-footer" href="/">
+          <span class="brand-mark" aria-hidden="true">LCG</span>
+          <span class="brand-name">Logic Cloud <strong>Geo</strong></span>
+        </a>
+        <p>Practical geospatial services and demonstrations.</p>
+      </div>
+      <div class="footer-links">
+        <a href="mailto:lesterw@logiccloudgeo.com">lesterw@logiccloudgeo.com</a>
+        <a href="/docs">API documentation</a>
+        <a href="/health">Service health</a>
+      </div>
+      <p class="footer-meta">© <span data-current-year></span> Logic Cloud Geo</p>
+    </footer>
+    <script src="/static/js/site.js" defer></script>
+  </body>
+</html>

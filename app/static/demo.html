@@ -1,0 +1,185 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta
+      name="description"
+      content="Draw a point or line on a 3D MapLibre map and query the Logic Cloud Geo elevation service."
+    />
+    <title>Elevation Map Demonstration | Logic Cloud Geo</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Fraunces:opsz,wght@9..144,600&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="https://unpkg.com/maplibre-gl@5.24.0/dist/maplibre-gl.css" />
+    <link rel="stylesheet" href="/static/css/site.css" />
+  </head>
+  <body class="demo-page">
+    <a class="skip-link" href="#main-content">Skip to content</a>
+    <header class="site-header">
+      <a class="brand" href="/" aria-label="Logic Cloud Geo home">
+        <span class="brand-mark" aria-hidden="true">LCG</span>
+        <span class="brand-name">Logic Cloud <strong>Geo</strong></span>
+      </a>
+      <button class="menu-toggle" type="button" aria-expanded="false" data-menu-toggle>
+        Menu
+      </button>
+      <nav class="site-nav" aria-label="Primary navigation" data-site-nav>
+        <a href="/">Home</a>
+        <a href="/elevation">Elevation service</a>
+        <a aria-current="page" href="/elevation/demo">Map demonstration</a>
+        <a href="/docs">API documentation</a>
+      </nav>
+    </header>
+
+    <main id="main-content" class="demo-main">
+      <section class="demo-heading">
+        <div>
+          <p class="eyebrow">Interactive demonstration</p>
+          <h1>Draw the question. Inspect the returned elevations.</h1>
+        </div>
+        <p>
+          Start in Tallahassee, Florida. Choose a point or line tool, draw on the map, then send
+          the generated coordinates to the live Logic Cloud Geo service.
+        </p>
+      </section>
+
+      <section class="map-workspace" aria-label="Elevation map workspace">
+        <aside class="map-sidebar">
+          <div class="control-section">
+            <p class="control-label">1. Choose geometry</p>
+            <div class="segmented-control" role="group" aria-label="Drawing mode">
+              <button class="is-active" type="button" data-mode="point">Point</button>
+              <button type="button" data-mode="line">Line</button>
+            </div>
+            <p class="control-help" id="draw-help">
+              Click the map once to place or replace the point.
+            </p>
+          </div>
+
+          <div class="control-section">
+            <p class="control-label">2. Review and submit</p>
+            <label for="units">Elevation units</label>
+            <select id="units">
+              <option value="feet" selected>Feet</option>
+              <option value="meters">Meters</option>
+            </select>
+            <button class="button button-primary button-full" id="analyze" type="button" disabled>
+              Analyze point
+            </button>
+            <div class="inline-actions">
+              <button class="text-button" id="undo" type="button" disabled>Undo vertex</button>
+              <button class="text-button" id="clear" type="button" disabled>Clear</button>
+            </div>
+          </div>
+
+          <div class="control-section">
+            <div class="range-heading">
+              <label for="exaggeration">Terrain exaggeration</label>
+              <output id="exaggeration-value" for="exaggeration">4×</output>
+            </div>
+            <input id="exaggeration" type="range" min="1" max="8" step="0.5" value="4" />
+            <p class="control-help">
+              Four times exaggeration makes Florida's low relief easier to see. It changes only
+              the display—not the returned elevations.
+            </p>
+            <button class="button button-secondary button-full" id="reset-view" type="button">
+              Reset Tallahassee view
+            </button>
+          </div>
+
+          <div class="map-status" id="map-status" role="status" aria-live="polite">
+            Choose a drawing tool and click the map.
+          </div>
+        </aside>
+
+        <div class="map-panel">
+          <div id="map" aria-label="Interactive 3D map centered on Tallahassee, Florida"></div>
+          <div class="map-key">
+            <span><i class="key-line"></i> Drawn line</span>
+            <span><i class="key-sample"></i> API sample</span>
+          </div>
+        </div>
+      </section>
+
+      <section class="results-section" id="results" hidden>
+        <div class="results-heading">
+          <div>
+            <p class="eyebrow">Live service response</p>
+            <h2 id="results-title">Elevation results</h2>
+          </div>
+          <button class="button button-secondary" id="download-results" type="button">
+            Download CSV
+          </button>
+        </div>
+        <div class="summary-grid" id="summary-grid"></div>
+        <div class="profile-chart" id="profile-chart" hidden>
+          <h3>Elevation profile</h3>
+          <div id="chart-container"></div>
+        </div>
+        <div class="table-scroll">
+          <table>
+            <caption class="visually-hidden">Elevation service results</caption>
+            <thead>
+              <tr>
+                <th scope="col">Sequence</th>
+                <th scope="col">Distance</th>
+                <th scope="col">Latitude</th>
+                <th scope="col">Longitude</th>
+                <th scope="col">Elevation</th>
+                <th scope="col">Status</th>
+              </tr>
+            </thead>
+            <tbody id="results-body"></tbody>
+          </table>
+        </div>
+        <p class="source-note">
+          Analytical values come from the Logic Cloud Geo USGS 3DEP service. The map's visual 3D
+          terrain uses separate Mapzen terrain tiles and may not match the analytical samples.
+        </p>
+      </section>
+
+      <section class="demo-notes">
+        <article>
+          <h2>How line sampling works</h2>
+          <p>
+            The browser measures the complete multi-vertex line geodesically, selects a readable
+            spacing from 25 meters upward, includes both endpoints, and caps the request at 200
+            samples. Longer lines are intentionally sampled more sparsely.
+          </p>
+        </article>
+        <article>
+          <h2>What the 3D map means</h2>
+          <p>
+            Tilt, rotation, hillshade, and vertical exaggeration help reveal terrain. They are
+            visualization controls. The numerical table is the service result and remains
+            unchanged when the display exaggeration changes.
+          </p>
+        </article>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <div>
+        <a class="brand brand-footer" href="/">
+          <span class="brand-mark" aria-hidden="true">LCG</span>
+          <span class="brand-name">Logic Cloud <strong>Geo</strong></span>
+        </a>
+        <p>Practical geospatial services and demonstrations.</p>
+      </div>
+      <div class="footer-links">
+        <a href="mailto:lesterw@logiccloudgeo.com">lesterw@logiccloudgeo.com</a>
+        <a href="/elevation">Service details</a>
+        <a href="/docs">API documentation</a>
+      </div>
+      <p class="footer-meta">© <span data-current-year></span> Logic Cloud Geo</p>
+    </footer>
+
+    <script src="https://unpkg.com/maplibre-gl@5.24.0/dist/maplibre-gl.js"></script>
+    <script src="/static/js/site.js" defer></script>
+    <script src="/static/js/demo.js" defer></script>
+  </body>
+</html>

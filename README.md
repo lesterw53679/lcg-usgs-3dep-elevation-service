@@ -25,7 +25,8 @@ python -m pip install -e ".[dev,docs,notebooks]"
 uvicorn app.main:app --reload
 ```
 
-Open <http://127.0.0.1:8000/docs> for the interactive API documentation.
+Open <http://127.0.0.1:8000> for the Logic Cloud Geo website and
+<http://127.0.0.1:8000/docs> for the interactive API documentation.
 
 If native geospatial dependencies make local installation difficult, use Docker:
 
@@ -77,7 +78,7 @@ mkdocs serve
 ```
 
 Project documentation covers the API contract, architecture, Azure preparation, and the
-planned ArcGIS Pro line-to-points integration.
+ArcGIS Pro line-to-points integration.
 
 The deployment chapters provide the complete reproducible Azure installation and the ongoing
 GitHub Actions/OIDC delivery pattern:
@@ -93,9 +94,27 @@ GitHub Actions/OIDC delivery pattern:
 - `docs/topographic-profile-notebook.md`: ordered point input, local validation, sequential API
   batching, WGS 84 geodesic distance, no-data review, plotting, exports, and the path toward
   ArcGIS Pro and browser clients.
+- `docs/elevation-api-examples-notebook.md`: compact single-coordinate and user-keyed point-list
+  requests with a `db_key` join and CSV export.
+- `docs/web-interface.md`: public-site routes, MapLibre terrain architecture, point and line
+  interaction, adaptive sparse sampling, notebook downloads, test boundaries, and deployment.
 
-The deployed development service is available at
+The deployed development website is available at <https://elevation.logiccloudgeo.com>.
+Interactive API documentation remains available at
 <https://elevation.logiccloudgeo.com/docs>.
+
+## Public website
+
+FastAPI serves a framework-light public interface from the same Azure container as the API:
+
+- `/`: Logic Cloud Geo introduction and founder-profile placeholder;
+- `/elevation`: service description, validation summary, and notebook downloads;
+- `/elevation/demo`: MapLibre point and line demonstration with 3D terrain; and
+- `/docs`: the existing OpenAPI interface.
+
+The map uses OpenFreeMap for the basemap and Mapzen Terrain Tiles for visual terrain. Those
+display sources are independent of the numerical elevations returned by the 3DEP API. The line
+client selects a sparse geodesic sample interval and caps a demonstration request at 200 points.
 
 ## Topographic profile notebook
 
@@ -109,4 +128,7 @@ python -m jupyter lab
 Open `notebooks/topographic_profile.ipynb`. The notebook reads an ordered WGS 84 point table,
 queries the public bulk-elevation endpoint, calculates WGS 84 geodesic distance along the
 profile, plots the elevations, and exports CSV, GeoJSON, and PNG results. A small synthetic
-Florida transect is provided in `sample_data/florida_profile_points.csv`.
+Florida transect is provided in both CSV and ArcGIS-style TSV forms.
+
+Open `notebooks/elevation_api_examples.ipynb` for the smaller instructional examples: one
+latitude/longitude request and one user-keyed list whose results are joined back by `db_key`.

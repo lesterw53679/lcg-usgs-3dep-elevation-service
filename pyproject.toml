@@ -32,10 +32,14 @@ notebooks = [
   "pandas>=2.2,<4",
   "pyproj>=3.7,<4",
   "requests>=2.32,<3",
+  "shapely>=2.0,<3",
 ]
 
 [tool.setuptools.packages.find]
 include = ["app*"]
+
+[tool.setuptools.package-data]
+app = ["static/*.html", "static/css/*.css", "static/js/*.js"]
 
 [tool.pytest.ini_options]
 addopts = "-ra --strict-markers"

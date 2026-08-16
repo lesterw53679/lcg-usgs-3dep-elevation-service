@@ -3,12 +3,14 @@
 from __future__ import annotations
 
 from fastapi import FastAPI
-from fastapi.responses import RedirectResponse
+from fastapi.staticfiles import StaticFiles
 
 from app import __version__
 from app.api import router
 from app.config import get_settings
 from app.middleware import MaxRequestBodySizeMiddleware
+from app.web import STATIC_ROOT
+from app.web import router as web_router
 
 app = FastAPI(
     title="USGS 3DEP Elevation Service",
@@ -25,8 +27,5 @@ app.add_middleware(
     max_bytes=get_settings().max_request_body_bytes,
 )
 app.include_router(router)
-
-
-@app.get("/", include_in_schema=False)
-async def root() -> RedirectResponse:
-    return RedirectResponse(url="/docs")
+app.mount("/static", StaticFiles(directory=STATIC_ROOT), name="static")
+app.include_router(web_router)

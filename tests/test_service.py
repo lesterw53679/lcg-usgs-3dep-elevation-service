@@ -57,3 +57,27 @@ def test_enforces_configured_batch_limit_before_provider_call() -> None:
 
     assert provider.calls == []
 
+
+def test_default_500_point_boundary_with_fake_provider() -> None:
+    maximum = 500
+    points = [
+        BulkPoint(db_key=f"P-{index:03d}", latitude=30.0, longitude=-84.0)
+        for index in range(maximum)
+    ]
+    provider = FakeProvider([1.0] * maximum)
+    service = ElevationService(provider)
+
+    response = asyncio.run(service.query(points, ElevationUnits.METERS))
+
+    assert len(response.results) == maximum
+    assert len(provider.calls) == 1
+    assert len(provider.calls[0]) == maximum
+
+    oversized_points = [
+        *points,
+        BulkPoint(db_key="P-500", latitude=30.0, longitude=-84.0),
+    ]
+    with pytest.raises(BatchTooLargeError):
+        asyncio.run(service.query(oversized_points, ElevationUnits.METERS))
+
+    assert len(provider.calls) == 1

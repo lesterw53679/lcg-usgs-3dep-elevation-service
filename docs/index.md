@@ -22,9 +22,14 @@ latitude in decimal degrees. It supports a single point or an ordered batch of k
 - Passwordless GitHub Actions deployments using Azure OIDC
 - Public custom hostname with Azure-managed TLS
 - Jupyter workflow for ordered topographic profiles
+- Compact notebook examples for single and keyed-list elevation requests
+- Logic Cloud Geo introduction and elevation-service pages
+- MapLibre point and line demonstration with exaggerated 3D terrain
+- Direct downloads for both reviewed Jupyter notebooks
 
 ## Deployed development service
 
 - API base URL: <https://elevation.logiccloudgeo.com>
+- Public map demonstration: <https://elevation.logiccloudgeo.com/elevation/demo>
 - Interactive OpenAPI documentation: <https://elevation.logiccloudgeo.com/docs>
 - Health check: <https://elevation.logiccloudgeo.com/health>
